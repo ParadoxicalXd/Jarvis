@@ -488,56 +488,57 @@ System({
 });
 
 System({
-    pattern: "automute ?(.*)",
+    pattern: "autolock ?(.*)",
     fromMe: true,
     onlyGroup: true,
     type: 'manage',
     adminAccess: true,
-    desc: "auto mute groups"
+    desc: "auto lock groups"
 }, async (message, match) => {
    match = match?.toUpperCase();
-   const { autoMute } = await getData(message.chat);
-   const action = autoMute && autoMute.message ? autoMute.message : 'null';
-   if (!match) return await message.send("*Wrong format!*\n *.automute 10:00 PM*\n *.automute 06:00 AM*\n *.automute off*");
+   const { autoLock } = await getData(message.chat);
+   const action = autoLock && autoLock.message ? autoLock.message : 'null';
+   if (!match) return await message.send("*Wrong format!*\n *.autolock 10:00 PM*\n *.autolock 06:00 AM*\n *.autolock off*");
    if (match.toLowerCase() === "off") {
-      await setData(message.jid, action, "false", "autoMute");
-      return await message.send("*Automute has been disabled in this group ❗*");       
+      await setData(message.jid, action, "false", "autoLock");
+      return await message.send("*Autolock has been disabled in this group ❗*");       
    } else if (match.toLowerCase() === "on") {
-      await setData(message.jid, action, "true", "autoMute");
-      return await message.send("*Automute has been enabled in this group ✅*");       
+      await setData(message.jid, action, "true", "autoLock");
+      return await message.send("*Autolock has been enabled in this group ✅*");       
    };
    var admin = await isAdmin(message, message.user.jid);
    if (!admin) return await message.send("_I'm not an admin_");
-   await setData(message.jid, match, "true", "autoMute");
-   await message.send(`*_Group will auto mute at ${match}, rebooting.._*`)
+   await setData(message.jid, match, "true", "autoLock");
+   await message.send(`*_Group will auto lock at ${match}_*`)
    require('pm2').restart('index.js');
 });
 
 System({
-    pattern: "autounmute ?(.*)",
+    pattern: "autounlock ?(.*)",
     fromMe: true,
     type: 'manage',
     onlyGroup: true,
     adminAccess: true,
-    desc: "auto mute groups",
+    desc: "auto unlock groups",
 }, async (message, match) => {
    match = match?.toUpperCase();
-   const { autoUnmute } = await getData(message.chat);
-   const action = autoUnmute && autoUnmute.message ? autoUnmute.message : 'null';
-   if (!match) return await message.send("*Wrong format!*\n *.autounmute 10:00 PM*\n *.autounmute 06:00 AM*\n *.autounmute off*");
+   const { autoUnlock } = await getData(message.chat);
+   const action = autoUnlock && autoUnlock.message ? autoUnlock.message : 'null';
+   if (!match) return await message.send("*Wrong format!*\n *.autounlock 10:00 PM*\n *.autounlock 06:00 AM*\n *.autounlock off*");
    if (match.toLowerCase() === "off") {
-      await setData(message.jid, action, "false", "autoUnmute");
-      return await message.send("*Autounmute has been disabled in this group ❗*");       
+      await setData(message.jid, action, "false", "autoUnlock");
+      return await message.send("*Autounlock has been disabled in this group ❗*");       
    } else if (match.toLowerCase() === "on") {
-      await setData(message.jid, action, "true", "autoUnmute");
-      return await message.send("*Autounmute has been enabled in this group ✅*");       
+      await setData(message.jid, action, "true", "autoUnlock");
+      return await message.send("*Autounlock has been enabled in this group ✅*");       
    };
    var admin = await isAdmin(message, message.user.jid);
    if (!admin) return await message.send("_I'm not an admin_");
-   await setData(message.jid, match, "true", "autoUnmute");
-   await message.send(`*_Group will auto unmute at ${match}, rebooting.._*`)
+   await setData(message.jid, match, "true", "autoUnlock");
+   await message.send(`*_Group will auto unlock at ${match}_*`)
    require('pm2').restart('index.js');
 });
+
 
 System({
     pattern: "getmute ?(.*)",
